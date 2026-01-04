@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Article</title>
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+</head>
+<body>
+    <!-- ==================== HEADER / NAVIGATION ==================== -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <span class="logo-icon">📰</span>
+                <div>
+                    <div>My Blog</div>
+                    <div class="tagline">Stories & Ideas</div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <a href="{% url 'post_list' %}" class="btn-nav">← Back to Blog</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>✍️ Create <span class="highlight-text">New Article</span></h1>
+            <p>Share your thoughts with the world and inspire others</p>
+        </div>
+    </section>
+
+    <!-- ==================== FORM CONTAINER ==================== -->
+    <div class="container" style="max-width: 800px;">
+        <div class="form-container">
+            <div class="form-header">
+                <h1>📝 Write Your Story</h1>
+                <p>Craft engaging content that resonates with your readers</p>
+            </div>
+
+            <div class="form-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <!-- ========== TITLE FIELD ========== -->
+                    <div class="form-group">
+                        <label for="{{ form.title.id_for_label }}">
+                            🎯 {{ form.title.label }}
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div style="color: var(--highlight); font-size: 0.9rem; margin-top: 8px; padding: 8px; background: rgba(233, 69, 96, 0.1); border-radius: 5px;">
+                                ⚠️ {{ form.title.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ========== CATEGORY FIELD ========== -->
+                    <div class="form-group">
+                        <label for="{{ form.category.id_for_label }}">
+                            📂 {{ form.category.label }}
+                        </label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <div style="color: var(--highlight); font-size: 0.9rem; margin-top: 8px; padding: 8px; background: rgba(233, 69, 96, 0.1); border-radius: 5px;">
+                                ⚠️ {{ form.category.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ========== CONTENT FIELD ========== -->
+                    <div class="form-group">
+                        <label for="{{ form.content.id_for_label }}">
+                            📄 {{ form.content.label }}
+                        </label>
+                        {{ form.content }}
+                        {% if form.content.errors %}
+                            <div style="color: var(--highlight); font-size: 0.9rem; margin-top: 8px; padding: 8px; background: rgba(233, 69, 96, 0.1); border-radius: 5px;">
+                                ⚠️ {{ form.content.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ========== FORM ACTIONS ========== -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">
+                            💾 Publish Article
+                        </button>
+                        <a href="{% url 'post_list' %}" class="btn-cancel">
+                            ← Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== INFO SECTION ==================== -->
+    <div class="container" style="margin-top: 60px; margin-bottom: 60px;">
+        <div style="background: var(--light); padding: 40px; border-radius: 12px; text-align: center;">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">💡 Writing Tips</h3>
+            <p style="color: var(--text-light); line-height: 1.8;">
+                Keep your title clear and engaging • Use simple, readable language • 
+                Break content into sections • Add examples and stories • Proofread before publishing
+            </p>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <p>&copy; 2026 My Professional Blog. All rights reserved. | Built with <a href="#">Django</a> ❤️</p>
+    </footer>
+
+    <script src="{% static 'blog/js/script.js' %}"></script>
+</body>
+</html>

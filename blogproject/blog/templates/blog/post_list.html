@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Blog</title>
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+</head>
+<body>
+    <!-- ==================== HEADER / NAVIGATION ==================== -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <span class="logo-icon">📰</span>
+                <div>
+                    <div>My Blog</div>
+                    <div class="tagline">Stories & Ideas</div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <a href="#posts" class="btn-nav">📖 Read</a>
+                <a href="{% url 'post_create' %}" class="btn-nav btn-create">✍️ Write Post</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight-text">My Blog</span></h1>
+            <p>Discover insights, stories, and ideas shared through carefully crafted articles</p>
+            <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                <a href="#posts" class="btn-primary">📚 Explore Articles</a>
+                <a href="{% url 'post_create' %}" class="btn-primary" style="background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); border: 2px solid rgba(255,255,255,0.4);">➕ Create Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <div class="container">
+        <section class="posts-section" id="posts">
+            <!-- ========== SECTION HEADER ========== -->
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">📚 Latest Articles</h2>
+                    <p class="section-subtitle">Explore our latest blog posts and share your thoughts</p>
+                </div>
+                <a href="{% url 'post_create' %}" class="btn-primary">
+                    <span>➕</span> New Article
+                </a>
+            </div>
+
+            <!-- ========== POSTS GRID ========== -->
+            {% if page_obj %}
+                <div class="posts-grid">
+                    {% for post in page_obj %}
+                        <div class="post-card">
+                            <div class="post-header">
+                                <span class="post-category">{{ post.category.name }}</span>
+                                <h3 class="post-title">{{ post.title }}</h3>
+                                <p class="post-excerpt">{{ post.content|truncatewords:25 }}</p>
+                            </div>
+                            <div class="post-footer">
+                                <div class="post-meta">
+                                    <span class="post-date">📅 {{ post.created_at|date:"M d, Y" }}</span>
+                                </div>
+                                <a href="{% url 'post_edit' post.id %}" class="btn-secondary">✏️ Edit</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- ========== PAGINATION ========== -->
+                <div style="text-align: center; margin-top: 60px;">
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">« First</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">‹ Previous</a>
+                        {% endif %}
+
+                        <span>Page <strong>{{ page_obj.number }}</strong> of <strong>{{ page_obj.paginator.num_pages }}</strong></span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Next ›</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Last »</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <!-- ========== EMPTY STATE ========== -->
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <h2>No Articles Yet</h2>
+                    <p>Start your blogging journey by creating your first article</p>
+                    <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                        <a href="{% url 'post_create' %}" class="btn-primary">✍️ Create First Article</a>
+                        <a href="{% url 'post_create' %}" class="btn-primary" style="background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); color: var(--primary); border: 2px solid var(--accent);">Learn More</a>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+
+        <!-- ==================== CTA SECTION ==================== -->
+        <section style="margin-top: 80px; padding: 60px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 15px; text-align: center; color: var(--white); animation: slideUp 0.8s ease;">
+            <h2 style="font-size: 2rem; margin-bottom: 20px;">Ready to Share Your Story?</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px;">Join our community of writers and share your thoughts with the world</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'post_create' %}" class="btn-primary">🚀 Start Writing</a>
+                <a href="#posts" class="btn-primary" style="background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4);">📖 Read Articles</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <p>&copy; 2026 My Professional Blog. All rights reserved. | Built with <a href="#">Django</a> ❤️</p>
+    </footer>
+
+    <script src="{% static 'blog/js/script.js' %}"></script>
+</body>
+</html>
